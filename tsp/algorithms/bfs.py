@@ -5,6 +5,8 @@ logger = logging.getLogger(__name__)
 
 
 class BestFirstSearch(object):
+    """Best First Search is a greedy search algorithm; always making the best local
+    decision, even if it's not globally optimum"""
     NAME = 'Best First Search'
     
     def __init__(self, tour):
@@ -12,7 +14,6 @@ class BestFirstSearch(object):
         self.path_cost = 0
     
     def solve(self):
-        """ Solve the problem using the best-first search algorithm """
         logger.info('Starting search')
         # pick a random start node
         current_node = random.randint(1, self.tour.size)

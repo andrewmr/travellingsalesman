@@ -10,7 +10,7 @@ class RestartingHillClimb(object):
     
     NAME = 'Restarting Hill Climb'
     
-    def __init__(self, tour, iterations=10000): # lower number of iterations
+    def __init__(self, tour, iterations=50000): # lower number of iterations
         self.tour = tour
         self.path_cost = 0
         self.iterations = iterations
@@ -30,10 +30,14 @@ class RestartingHillClimb(object):
                 best_score, best_path = score, path
             logger.info('Best cost so far: %d' % best_score)
             
-        return path
+        return best_path
 
 
 class HillClimbing(object):
+    """Stochastic optimisation process to minimise (or maximise) the cost of a solution.
+    General gist is we start with a random route, and incrementally make improvements to
+    it."""
+    
     NAME = 'Hill Climbing'
     
     def __init__(self, tour, iterations=100000):
@@ -58,16 +62,21 @@ class HillClimbing(object):
         
         for i in xrange(1,self.iterations):
             temp = start[:]
+            # randomly select two cities (could evaluate all the unique pairs in future)
             rand_x = random.randint(1,self.tour.size)
             rand_y = random.randint(1,self.tour.size)
             
+            # randomly select how we modify the path
             choice = random.randint(1,2)
-            if choice == 1: # for this we just swap the values in two locations
+            
+            # for this we just swap the values in two locations
+            if choice == 1:
                 cur_x = temp[rand_x - 1]
                 temp[rand_x - 1] = temp[rand_y - 1] 
                 temp[rand_y - 1] = cur_x
-                
-            if choice == 2: # for this we reverse an entire sub-path
+            
+            # for this we reverse an entire sub-path
+            if choice == 2: 
                 if rand_x >= rand_y:
                     temp2 = temp[rand_y:(rand_x - rand_y)+1]
                 else:
@@ -79,7 +88,8 @@ class HillClimbing(object):
                     temp[rand_y:(rand_x - rand_y)+1] = temp2
                 else:
                     temp[rand_x:(rand_y - rand_x)+1] = temp2
-
+            
+            # update
             if self.tour.get_length(temp) <= self.path_cost:
                 start = temp[:]
                 self.path_cost = self.tour.get_length(start)
