@@ -6,7 +6,6 @@ from algorithms import utils
 logger = logging.getLogger(__name__)
 
 class Importer:
-	""" Imports the tour data that requires solving """
 	def __init__(self):
 		self.regex = re.compile("[^a-zA-Z0-9,=]", re.UNICODE)
 		self.tour_name = ""
@@ -15,7 +14,7 @@ class Importer:
 		self.success = False
 
 	def load(self,f):
-		""" Loads in the import data and returns the extracted values """
+		"""Loads in the import data and returns a Tour instance"""
 		open_file =	open(f, "r")
 		self.contents = open_file.read()
 		# clean up and extrace the base data
@@ -25,7 +24,7 @@ class Importer:
 		return Tour(self.tour_name, self.tour_nodes)
 		
 	def clean_up(self):
-		""" Cleans up the imported data and assigns a few variables """
+		"""Cleans up the imported data and pulls out some metadata"""
 		self.contents = self.regex.sub('', self.contents)
 		self.contents = self.contents.split(",")
 		# pull out the name
@@ -55,13 +54,13 @@ class Importer:
 		y = 2
 		j = 0
 		
-		# initialise a 0-array of the right size
+		# initialise a 0-array of the right size (the diagonal will be 0s)
 		nodes = [[0 for col in range(self.tour_size)] for row in range(self.tour_size)]
 		while j < path_count:
 			nodes[x-1][y-1] = int(self.tour_nodes[j])
 			nodes[y-1][x-1] = int(self.tour_nodes[j])
 			
-			# a few checks
+			# work out where in the distaince matrix we are
 			if (y == self.tour_size):
 				x += 1
 				y = (x+1) % self.tour_size

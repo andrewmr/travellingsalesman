@@ -5,6 +5,9 @@ logger = logging.getLogger(__name__)
 
 
 class RestartingHillClimb(object):
+    """Restart repeats the hill climbing process a number of times, helps to avoid
+    getting stuck on a local maxima."""
+    
     NAME = 'Restarting Hill Climb'
     
     def __init__(self, tour, iterations=10000): # lower number of iterations
@@ -16,13 +19,17 @@ class RestartingHillClimb(object):
     def solve(self):
         logger.info('Hill climbing (%r restarts)' % (self.restarts))
 
-        path = []
+        best_score, best_path = None, []
         for i in xrange(self.restarts):
-            if i == 0:
-                path = HillClimbing(self.tour, self.iterations).solve()
-            else:
-                path = HillClimbing(self.tour, self.iterations).solve(path)
-                
+            path = HillClimbing(self.tour, self.iterations).solve()
+            score = self.tour.get_length(path)
+            
+            if best_score == None:
+                best_score, best_path = score, path
+            elif score <= best_score:
+                best_score, best_path = score, path
+            logger.info('Best cost so far: %d' % best_score)
+            
         return path
 
 

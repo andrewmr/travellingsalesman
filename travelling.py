@@ -7,8 +7,7 @@ import logging
 FORMAT = '%(asctime)s %(levelname)s | %(name)s | %(message)s'
 
 def main(options):
-    """Starts the actual Travelling Salesman Problem solver"""
-    # print options
+    """Starts the solver"""
     level = logging.DEBUG if options.verbose else logging.INFO
     logging.basicConfig(level=level, format=FORMAT, 
                         datefmt='%Y-%m-%d %I:%M:%S %p')
