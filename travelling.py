@@ -11,17 +11,22 @@ def main(options):
     level = logging.DEBUG if options.verbose else logging.INFO
     logging.basicConfig(level=level, format=FORMAT, 
                         datefmt='%Y-%m-%d %I:%M:%S %p')
-    solver = Solver(options.file_name, options.algorithm)
+                        
+    solver = Solver(options)
     solver.run()
 
 if __name__ == '__main__':
     default_file = "problems/file012.txt"
+    default_dir = None
     default_algo = 'bfs'
     
     parser = OptionParser()
     parser.add_option('-f', '--file', dest='file_name',
                       help='path to the file to be solved', metavar='FILE',
                       default=default_file)
+    parser.add_option('-d', '--dir', dest='dir_name',
+                      help='path to the directory of files to be solved', metavar='DIR',
+                      default=default_dir)
     parser.add_option('-a', '--algo', dest='algorithm',
                       help='algorithm to be used', metavar='NAME',
                       default=default_algo)                      
