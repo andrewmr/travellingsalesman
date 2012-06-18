@@ -44,7 +44,7 @@ class Importer:
 		path_count = len(self.tour_nodes)
 		
 		if expected < len(self.tour_nodes):
-		    logging.warning('Found %d paths, expecting %d - using expected' % (
+		    logger.warning('Found %d paths, expecting %d - using expected' % (
 		        len(self.tour_nodes), expected
 		    ))
 		    path_count = expected

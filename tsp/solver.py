@@ -3,6 +3,7 @@ from importer import Importer
 from tour import Tour
 from algorithms.bfs import BestFirstSearch
 from algorithms.hillclimbing import HillClimbing, RestartingHillClimb
+from algorithms.simanneal import SimulatedAnnealing
 import logging
 logger = logging.getLogger(__name__)
 
@@ -21,10 +22,12 @@ class Solver:
         name = name.lower()
         if name == 'bfs':
             return BestFirstSearch
-        elif name == 'hillclimbing' or name == 'hillclimb':
+        elif name in ['hillclimbing','hillclimb']:
             return HillClimbing
         elif name == 'hillclimb-restart':
             return RestartingHillClimb
+        elif name in ['simanneal', 'simulated-annealing','annealing']:
+            return SimulatedAnnealing
             
     def get_files(self, path):
         for top, dirs, files in os.walk('problems'):
@@ -35,9 +38,13 @@ class Solver:
                 
     def solve_file(self, file_name):
         tour = self.importer.load(file_name)
-    
-        algo = self.get_algo(self._algo_name)
-        algo = algo(tour)
+        
+        try:
+            algo = self.get_algo(self._algo_name)
+            algo = algo(tour)
+        except Exception as e:
+            logger.exception('No such algorithm %s' % self._algo_name)
+            raise e
         
         logger.info("Loaded problem '%s' and algo '%s'" % (file_name, algo.NAME))
         
@@ -58,10 +65,10 @@ class Solver:
             for file_name in self._files:
                 results.append( self.solve_file(file_name) )
             
-            logger.info('File\t\tCost')
-            
-            for file_name, path, length in results:
-                logger.info('%s\t%s' % (file_name.split('/')[1], length))
+            if len(self._files) > 1:
+                logger.info('File\t\tCost')
+                for file_name, path, length in results:
+                    logger.info('%s\t%s' % (file_name.split('/')[1], length))
         
         except Exception as e:
             logging.info('------------------------------')

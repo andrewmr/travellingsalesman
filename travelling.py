@@ -40,5 +40,6 @@ if __name__ == '__main__':
         print '\tbfs'
         print '\thillclimb'
         print '\thillclimb-restart'
+        print '\tsimulated-annealing'
     else:
         main(options)
