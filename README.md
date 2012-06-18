@@ -10,7 +10,7 @@ This is an ever expanding list, but the basic ones covered so far are:
 
 * [Best First Search](http://en.wikipedia.org/wiki/Best_first_search)
 * [Hill Climbing](http://en.wikipedia.org/wiki/Hill_climbing)
-* [Hill Climb & Restart] - A variant of the above that tries to find global maxima.
+* Hill Climb & Restart - A variant of the above that tries to find global maxima.
 * [Simulated Annealing](http://en.wikipedia.org/wiki/Simulated_annealing)
 
 
