@@ -21,7 +21,7 @@ class RestartingHillClimb(object):
 
         best_score, best_path = None, []
         for i in xrange(self.restarts):
-            path = HillClimbing(self.tour, self.iterations).solve()
+            path = HillClimbing(self.tour, options).solve()
             score = self.tour.get_length(path)
             
             if best_score == None:
@@ -40,10 +40,10 @@ class HillClimbing(object):
     
     NAME = 'Hill Climbing'
     
-    def __init__(self, tour, iterations=100000):
+    def __init__(self, tour, options):
         self.tour = tour
         self.path_cost = 0
-        self.iterations = iterations
+        self.iterations = options['iterations']
         
     def solve(self, starting_path=None):
         logger.info('Hill climbing (%r iterations)' % self.iterations)
