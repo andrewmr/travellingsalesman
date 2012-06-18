@@ -17,7 +17,7 @@ class SimulatedAnnealing(object):
     smaller probability of a worse solution being chosen."""
     NAME = 'Simulated Annealing'
     
-    def __init__(self, tour, params=None):
+    def __init__(self, tour, options=None):
         defaults = {
             'iterations': 100000,
             'alpha': 0.9995,

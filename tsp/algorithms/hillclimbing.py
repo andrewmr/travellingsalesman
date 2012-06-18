@@ -10,11 +10,11 @@ class RestartingHillClimb(object):
     
     NAME = 'Restarting Hill Climb'
     
-    def __init__(self, tour, iterations=50000): # lower number of iterations
+    def __init__(self, tour, options): # lower number of iterations
         self.tour = tour
         self.path_cost = 0
-        self.iterations = iterations
-        self.restarts = 5
+        self.iterations = options['iterations']
+        self.restarts = options['restarts']
         
     def solve(self):
         logger.info('Hill climbing (%r restarts)' % (self.restarts))

@@ -11,14 +11,17 @@ logger = logging.getLogger(__name__)
 class Solver:
     def __init__(self, options):
         self.importer = Importer()
-        # self._dir = options.dir_name
+
+        # try read all the files in the dir
         if options.dir_name is not None:
             self._files = [f for f in self.get_files(options.dir_name)]
         else:
-            self._files = [options.file_name]
+            self._files = [options.file_name] # only one file
         self._algo_name = options.algorithm if (options.algorithm is not None) else 'bfs'
+        self.options = options
         
     def get_algo(self, name):
+        """Return an instance of the algo specified"""
         name = name.lower()
         if name == 'bfs':
             return BestFirstSearch
@@ -29,7 +32,17 @@ class Solver:
         elif name in ['simanneal', 'simulated-annealing','annealing']:
             return SimulatedAnnealing
             
+    def get_options(self):
+        """Pull out the relevant (valid) options"""
+        return {
+            'alpha':float(self.options.alpha),
+            'iterations':int(self.options.iterations),
+            'temp':float(self.options.temperature),
+            'restarts':int(self.options.restarts),
+        }
+            
     def get_files(self, path):
+        """Find all solvable files in a dir"""
         for top, dirs, files in os.walk('problems'):
             for nm in files:
                 file_name = os.path.join(top, nm)
@@ -37,11 +50,12 @@ class Solver:
                     yield file_name
                 
     def solve_file(self, file_name):
+        """Attempt to solve the file, with the given algo"""
         tour = self.importer.load(file_name)
         
         try:
             algo = self.get_algo(self._algo_name)
-            algo = algo(tour)
+            algo = algo(tour, options=self.get_options())
         except Exception as e:
             logger.exception('No such algorithm %s' % self._algo_name)
             raise e
@@ -57,6 +71,7 @@ class Solver:
         return file_name, path, length
     
     def run(self):
+        """Run the solver over all provided files"""
         try:
             logger.info('Travelling Salesman Problem')
             

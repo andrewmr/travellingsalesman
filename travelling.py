@@ -16,30 +16,42 @@ def main(options):
     solver.run()
 
 if __name__ == '__main__':
-    default_file = "problems/file012.txt"
-    default_dir = None
-    default_algo = 'bfs'
-    
     parser = OptionParser()
+    parser.add_option('--alpha', dest='alpha',
+                      help='temperature decay. (used in Sim. Annealing)',
+                      metavar='ALPHA',
+                      default=0.9995)
+
+    parser.add_option('--temp', dest='temperature',
+                      help='starting temperature. (used in Sim. Annealing)',
+                      metavar='TEMP',
+                      default=10.0)
+
+    parser.add_option('--restarts', dest='restarts',
+                      help='max iterations (used in Restarting Hill Climb)',
+                      metavar='TEMP',
+                      default=5)  
+                                          
+    parser.add_option('--iterations', dest='iterations',
+                      help='max iterations (used in HC, RHC, SA)',
+                      metavar='TEMP',
+                      default=50000)                      
+
     parser.add_option('-f', '--file', dest='file_name',
                       help='path to the file to be solved', metavar='FILE',
-                      default=default_file)
+                      default='problems/file012.txt')
+                      
     parser.add_option('-d', '--dir', dest='dir_name',
                       help='path to the directory of files to be solved', metavar='DIR',
-                      default=default_dir)
+                      default=None)
+                      
     parser.add_option('-a', '--algo', dest='algorithm',
                       help='algorithm to be used', metavar='NAME',
-                      default=default_algo)                      
+                      default='bfs')    
+                                        
     parser.add_option('-v', '--verbose', dest='verbose', action="store_true",
-                      help='print status messages to stdout', default=False)
+                      help='print status messages to stdout', default=False)                      
 
     options, args = parser.parse_args()
-    
-    if 'help' in args:
-        print 'Possible algorithms:'
-        print '\tbfs'
-        print '\thillclimb'
-        print '\thillclimb-restart'
-        print '\tsimulated-annealing'
-    else:
-        main(options)
+
+    main(options)

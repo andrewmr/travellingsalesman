@@ -9,7 +9,7 @@ class BestFirstSearch(object):
     decision, even if it's not globally optimum"""
     NAME = 'Best First Search'
     
-    def __init__(self, tour):
+    def __init__(self, tour, options=None):
         self.tour = tour
         self.path_cost = 0
     
