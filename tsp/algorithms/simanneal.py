@@ -18,13 +18,10 @@ class SimulatedAnnealing(object):
     NAME = 'Simulated Annealing'
     
     def __init__(self, tour, options=None):
-        defaults = {
-            'iterations': 100000,
-            'alpha': 0.9995,
-            'temp': 10.0,
-        }
-
-        self._settings = defaults
+        self._iterations = options['iterations']
+        self._alpha = options['alpha']
+        self._temp = options['temp']
+        self._operator = options['operator']
         self._tour = tour
     
     def probability(self, current_cost, proposed_cost, temperature):
@@ -36,27 +33,30 @@ class SimulatedAnnealing(object):
     
     def cooling_schedule(self, start, alpha=0.9995):
         """Produces a linearly decreasing temperature"""
-        t = self._settings['temp']
+        t = self._temp
         while True:
             yield t
-            t = self._settings['alpha'] * t
+            t = self._alpha * t
             
     def try_improving_path(self, path):
         rand_x = random.randint(1,self._tour.size)
         rand_y = random.randint(1,self._tour.size)
 
         # randomly select how we modify the path
-        choice = random.randint(1,2)
-        path = path[:]
+        if self._operator == 'random':
+            choice = random.choice(['switch','reverse'])
+        elif self._operator not in ['switch','reverse']:
+            choice = random.choice(['switch','reverse'])
+            logger.warning("Unknown operator parameter, using default ('random')")
 
         # for this we just swap the values in two locations
-        if choice == 1:
+        if choice == 'switch':
             cur_x = path[rand_x - 1]
             path[rand_x - 1] = path[rand_y - 1] 
             path[rand_y - 1] = cur_x
 
         # for this we reverse an entire sub-path
-        if choice == 2: 
+        if choice == 'reverse':
             if rand_x >= rand_y:
                 path2 = path[rand_y:(rand_x - rand_y)+1]
             else:
@@ -71,7 +71,9 @@ class SimulatedAnnealing(object):
 
         return path
             
-    def solve(self, start_temp=10):        
+    def solve(self, start_temp=10):  
+        logger.info("Alpha: %.4f, Temp: %.1f, Iterations: %d" % (
+                        self._alpha, self._temp, self._iterations))      
         current_candidate = [i for i in range(1,self._tour.size+1)]
         random.shuffle(current_candidate)
 
@@ -87,7 +89,7 @@ class SimulatedAnnealing(object):
         
         temp_gen = self.cooling_schedule(start_temp)
         
-        for i in xrange(self._settings['iterations']):
+        for i in xrange(self._iterations):
             temperature = temp_gen.next()
             
             new_path = self.try_improving_path(current_path)
