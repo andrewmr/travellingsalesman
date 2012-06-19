@@ -39,6 +39,8 @@ Usage
 	                        [choices: bfs, hillclimb, hillclimb-restart,
 	                        simanneal]
 	  -v, --verbose         print debug messages to stdout
+	  -q, --quiet           only output the result (no status messages)
+
 	
 
 Problem files
