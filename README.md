@@ -24,13 +24,21 @@ Usage
 	Options:
 	  -h, --help            show this help message and exit
 	  --alpha=ALPHA         temperature decay. (used in Sim. Annealing)
+	                        [default: 0.9995]
 	  --temp=TEMP           starting temperature. (used in Sim. Annealing)
+	                        [default: 10.0]
 	  --restarts=TEMP       max iterations (used in Restarting Hill Climb)
+	                        [default: 5]
 	  --iterations=TEMP     max iterations (used in HC, RHC, SA)
+	                        [default: 50,000]
+	  --operator=OP         action to be performed when improving a solution
+	                        [default: random | choices: random, reverse, switch]
 	  -f FILE, --file=FILE  path to the file to be solved
 	  -d DIR, --dir=DIR     path to the directory of files to be solved
 	  -a NAME, --algo=NAME  algorithm to be used
-	  -v, --verbose         print status messages to stdout
+	                        [choices: bfs, hillclimb, hillclimb-restart,
+	                        simanneal]
+	  -v, --verbose         print debug messages to stdout
 	
 
 Problem files
