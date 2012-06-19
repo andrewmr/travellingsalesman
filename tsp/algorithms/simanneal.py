@@ -43,6 +43,7 @@ class SimulatedAnnealing(object):
         rand_y = random.randint(1,self._tour.size)
 
         # randomly select how we modify the path
+        choice = self._operator
         if self._operator == 'random':
             choice = random.choice(['switch','reverse'])
         elif self._operator not in ['switch','reverse']:

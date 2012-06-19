@@ -44,6 +44,7 @@ class HillClimbing(object):
         self.tour = tour
         self.path_cost = 0
         self.iterations = options['iterations']
+        self.operator = options['operator']
         
     def solve(self, starting_path=None):
         logger.info('Hill climbing (%r iterations)' % self.iterations)
@@ -67,6 +68,7 @@ class HillClimbing(object):
             rand_y = random.randint(1,self.tour.size)
             
             # randomly select how we modify the path
+            choice = self.operator
             if self.operator == 'random':
                 choice = random.choice(['switch','reverse'])
             elif self.operator not in ['switch','reverse']:
