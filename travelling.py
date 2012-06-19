@@ -18,24 +18,34 @@ def main(options):
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option('--alpha', dest='alpha',
-                      help='temperature decay. (used in Sim. Annealing)',
+                      help='temperature decay. (used in Sim. Annealing)\
+                            [default: 0.9995]',
                       metavar='ALPHA',
                       default=0.9995)
 
     parser.add_option('--temp', dest='temperature',
-                      help='starting temperature. (used in Sim. Annealing)',
+                      help='starting temperature. (used in Sim. Annealing)\
+                            [default: 10.0]',
                       metavar='TEMP',
                       default=10.0)
 
     parser.add_option('--restarts', dest='restarts',
-                      help='max iterations (used in Restarting Hill Climb)',
+                      help='max iterations (used in Restarting Hill Climb)\
+                            [default: 5]',
                       metavar='TEMP',
                       default=5)  
                                           
     parser.add_option('--iterations', dest='iterations',
-                      help='max iterations (used in HC, RHC, SA)',
+                      help='max iterations (used in HC, RHC, SA) \
+                            [default: 50,000]',
                       metavar='TEMP',
                       default=50000)                      
+
+    parser.add_option('--operator', dest='operator',
+                      help='action to be performed when improving a solution  \
+                            [default: random | choices: random, reverse, switch]',
+                      metavar='OP',
+                      default='random')
 
     parser.add_option('-f', '--file', dest='file_name',
                       help='path to the file to be solved', metavar='FILE',
@@ -46,11 +56,12 @@ if __name__ == '__main__':
                       default=None)
                       
     parser.add_option('-a', '--algo', dest='algorithm',
-                      help='algorithm to be used', metavar='NAME',
-                      default='bfs')    
+                      help='algorithm to be used \
+                            [choices: bfs, hillclimb, hillclimb-restart, simanneal]', 
+                      metavar='NAME', default='bfs')    
                                         
     parser.add_option('-v', '--verbose', dest='verbose', action="store_true",
-                      help='print status messages to stdout', default=False)                      
+                      help='print debug messages to stdout', default=False)                      
 
     options, args = parser.parse_args()
 

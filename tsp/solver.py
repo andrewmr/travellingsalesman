@@ -39,6 +39,7 @@ class Solver:
             'iterations':int(self.options.iterations),
             'temp':float(self.options.temperature),
             'restarts':int(self.options.restarts),
+            'operator':str(self.options.operator),
         }
             
     def get_files(self, path):

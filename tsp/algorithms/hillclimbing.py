@@ -67,16 +67,20 @@ class HillClimbing(object):
             rand_y = random.randint(1,self.tour.size)
             
             # randomly select how we modify the path
-            choice = random.randint(1,2)
+            if self.operator == 'random':
+                choice = random.choice(['switch','reverse'])
+            elif self.operator not in ['switch','reverse']:
+                choice = random.choice(['switch','reverse'])
+                logger.warning("Unknown operator parameter, using default ('random')")
             
             # for this we just swap the values in two locations
-            if choice == 1:
+            if choice == 'switch':
                 cur_x = temp[rand_x - 1]
                 temp[rand_x - 1] = temp[rand_y - 1] 
                 temp[rand_y - 1] = cur_x
             
             # for this we reverse an entire sub-path
-            if choice == 2: 
+            if choice == 'reverse': 
                 if rand_x >= rand_y:
                     temp2 = temp[rand_y:(rand_x - rand_y)+1]
                 else:
