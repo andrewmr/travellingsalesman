@@ -44,4 +44,4 @@ Usage
 Problem files
 -------------
 
-A small set of problem files can be found under the `problems` directory.
+A small set of problem files can be found under the `problems` directory. These are all problems for an undirected graph.
