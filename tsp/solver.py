@@ -66,10 +66,10 @@ class Solver:
         path = algo.solve()
         length = tour.get_length(path)
 
-        logger.info('Path found. Cost: %r' % length)
-        print path
+        logger.info('Path found for %s. Cost: %r' % (tour.name,length))
+        # print path
         
-        return file_name, path, length
+        return tour.name, path, length
     
     def run(self):
         """Run the solver over all provided files"""
@@ -81,11 +81,12 @@ class Solver:
             for file_name in self._files:
                 results.append( self.solve_file(file_name) )
             
-            if len(self._files) > 1:
-                logger.info('File\t\tCost')
-                for file_name, path, length in results:
-                    logger.info('%s\t%s' % (file_name.split('/')[1], length))
-        
+            for name, path, length in results:
+                print 'FILE=%s,' % name
+                print 'SIZE=%d,' % length
+                print 'PATH=%s' % ','.join(map(str,path))
+                # logger.info('%s\t%s' % (file_name.split('/')[1], length))
+    
         except Exception as e:
             logging.info('------------------------------')
             logging.info('Encountered an error. Halting.')

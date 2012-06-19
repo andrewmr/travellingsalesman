@@ -8,7 +8,14 @@ FORMAT = '%(asctime)s %(levelname)s | %(name)s | %(message)s'
 
 def main(options):
     """Starts the solver"""
+    # we usually want INFO level, unless we're in verbose mode which wants DEBUG
     level = logging.DEBUG if options.verbose else logging.INFO
+    # but if quiet is specified it trumps all
+    if options.quiet:
+        level = logging.ERROR
+    # we set error as we want INFO/WARNING/DEBUG ignored, but we're still interested in 
+    # errors and critical messages
+        
     logging.basicConfig(level=level, format=FORMAT, 
                         datefmt='%Y-%m-%d %I:%M:%S %p')
                         
@@ -61,7 +68,11 @@ if __name__ == '__main__':
                       metavar='NAME', default='bfs')    
                                         
     parser.add_option('-v', '--verbose', dest='verbose', action="store_true",
-                      help='print debug messages to stdout', default=False)                      
+                      help='print debug messages to stdout', default=False)  
+
+    parser.add_option('-q', '--quiet', dest='quiet', action="store_true",
+                      help='only output the result (no status messages)', default=False)  
+                                          
 
     options, args = parser.parse_args()
 
